@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://bjemgl2famk1s"]
+
+[ext_resource type="Script" uid="uid://c5th3w30vbagw" path="res://bullet.gd" id="1_v7oki"]
+[ext_resource type="Texture2D" uid="uid://dr5ykos8qbt8j" path="res://Sprites/Gun Sprite.png" id="2_v8qja"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v6r4t"]
+
+[node name="Bullet" type="Area2D" unique_id=888757183]
+script = ExtResource("1_v7oki")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1435975468]
+texture = ExtResource("2_v8qja")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=158359517]
+shape = SubResource("CircleShape2D_v6r4t")

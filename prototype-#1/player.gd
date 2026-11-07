@@ -1,27 +1,28 @@
 extends CharacterBody2D
 
+const SMOOTHING_SPEED = 7.0
+
 @export var speed = 120.0
 @export var acceleration = 1800.0
 @export var deceleration = 2400.0
 
-@onready var gun : Node2D = $Gun
+@onready var gun : Node2D = $GunPivot/Gun
 @onready var gun_pivot : Marker2D = $GunPivot
-
-const ROTATION_DEADZONE = 10.0
 
 func _process(delta: float) -> void:
 	var mouse_position := get_global_mouse_position()
-	var distance_to_mouse := gun_pivot.global_position.distance_to(mouse_position)
+	var rotation_to_mouse = gun_pivot.global_position.angle_to_point(mouse_position)
+	var mouse_relative_position := (mouse_position - gun_pivot.global_position)
 	
-	if (distance_to_mouse > ROTATION_DEADZONE):
-		var mouse_direction := gun_pivot.global_position.direction_to(mouse_position)
+	var weight = 1 - exp(-SMOOTHING_SPEED * delta)
+	var orbit_position = lerp_angle(rotation_to_mouse, gun_pivot.rotation, weight)
 	
-		gun.global_position = gun_pivot.global_position + mouse_direction * ROTATION_DEADZONE
-		
-		gun.scale.y = 1 if mouse_direction.x > 0 else -1
-		gun.show_behind_parent = mouse_direction.y < 0
+	gun_pivot.global_rotation = orbit_position
 	
-		gun.look_at(mouse_position)
+	print(mouse_relative_position)
+	
+	gun.scale.y = 1 if mouse_relative_position.x > 0 else -1
+	gun_pivot.show_behind_parent = mouse_relative_position.y  < -2
 
 func _physics_process(delta: float) -> void:
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")

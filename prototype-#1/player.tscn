@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bunhp8pcxiwnh" path="res://player.gd" id="1_4flbx"]
 [ext_resource type="Texture2D" uid="uid://dcvb7vw0cqdvq" path="res://Sprites/Purple Dog Sprite Sheet.png" id="2_onrkg"]
+[ext_resource type="Texture2D" uid="uid://dnron7jqq5y7j" path="res://Sprites/Purple dog run sprite sheet.png" id="3_hqtel"]
 [ext_resource type="PackedScene" uid="uid://cglof3762id0s" path="res://gun.tscn" id="3_i3pqv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
@@ -21,28 +22,28 @@ atlas = ExtResource("2_onrkg")
 region = Rect2(60, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2hs0m"]
-atlas = ExtResource("2_onrkg")
-region = Rect2(0, 20, 20, 20)
+atlas = ExtResource("3_hqtel")
+region = Rect2(0, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1jxqw"]
-atlas = ExtResource("2_onrkg")
-region = Rect2(20, 20, 20, 20)
+atlas = ExtResource("3_hqtel")
+region = Rect2(20, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dw050"]
-atlas = ExtResource("2_onrkg")
-region = Rect2(40, 20, 20, 20)
+atlas = ExtResource("3_hqtel")
+region = Rect2(40, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b26j0"]
-atlas = ExtResource("2_onrkg")
-region = Rect2(60, 20, 20, 20)
+atlas = ExtResource("3_hqtel")
+region = Rect2(60, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n7ghd"]
-atlas = ExtResource("2_onrkg")
-region = Rect2(80, 20, 20, 20)
+atlas = ExtResource("3_hqtel")
+region = Rect2(80, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nvl01"]
-atlas = ExtResource("2_onrkg")
-region = Rect2(100, 20, 20, 20)
+atlas = ExtResource("3_hqtel")
+region = Rect2(100, 0, 20, 20)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v6r4t"]
 animations = [{
@@ -97,8 +98,7 @@ speed = 110.0
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=50827932]
 unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_v6r4t")
-animation = &"idle"
-frame_progress = 0.22480093
+animation = &"run"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=86691010]
 position = Vector2(0, 1.9999998)
@@ -111,7 +111,8 @@ limit_enabled = false
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="Gun" parent="." unique_id=2103357176 instance=ExtResource("3_i3pqv")]
-position = Vector2(13, 3)
-
 [node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
+position = Vector2(0, 2)
+
+[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("3_i3pqv")]
+position = Vector2(9, 0)
