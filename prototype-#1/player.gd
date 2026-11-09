@@ -19,8 +19,6 @@ func _process(delta: float) -> void:
 	
 	gun_pivot.global_rotation = orbit_position
 	
-	print(mouse_relative_position)
-	
 	gun.scale.y = 1 if mouse_relative_position.x > 0 else -1
 	gun_pivot.show_behind_parent = mouse_relative_position.y  < -2
 

@@ -1,11 +1,11 @@
 extends Area2D
+class_name Bullet
 
 @export var bullet_speed: float = 200.0
+var direction: Vector2
 
-@onready var muzzle: Marker2D = %muzzle
+func _physics_process(delta: float) -> void:
+	global_position += (direction * bullet_speed * delta)
 
-func _process(delta: float) -> void:
-	var mouse_position = get_global_mouse_position()
-	var direction: Vector2 =  (mouse_position - muzzle.global_position).normalized()
-	
-	
+func _on_body_shape_entered(body_rid: RID, body: Node2D, body_shape_index: int, local_shape_index: int) -> void:
+	queue_free()
