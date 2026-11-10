@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://d0nkrqimljjrd"]
+
+[ext_resource type="Script" uid="uid://dk8vdmwajdxia" path="res://enemy.gd" id="1_4gyqm"]
+[ext_resource type="Texture2D" uid="uid://bo72mfpn2deq4" path="res://Sprites/Enemy Placeholder Sprite.png" id="2_qi2p4"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_07orm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gc083"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_07orm"]
+radius = 50.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_gc083"]
+radius = 70.0
+
+[node name="Enemy" type="CharacterBody2D" unique_id=1703504748]
+script = ExtResource("1_4gyqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1924230319]
+shape = SubResource("RectangleShape2D_07orm")
+disabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2073764493]
+texture = ExtResource("2_qi2p4")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=871218179]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1185714134]
+shape = SubResource("RectangleShape2D_gc083")
+
+[node name="enter_area" type="Area2D" parent="." unique_id=1704804992]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="enter_area" unique_id=235733418]
+shape = SubResource("CircleShape2D_07orm")
+
+[node name="exit_area" type="Area2D" parent="." unique_id=997792375]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="exit_area" unique_id=822591037]
+shape = SubResource("CircleShape2D_gc083")

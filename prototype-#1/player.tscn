@@ -108,7 +108,6 @@ shape = SubResource("RectangleShape2D_onrkg")
 zoom = Vector2(3, 3)
 process_callback = 0
 limit_enabled = false
-position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
 [node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
