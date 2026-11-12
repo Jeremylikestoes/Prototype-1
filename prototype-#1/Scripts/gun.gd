@@ -18,7 +18,7 @@ func _physics_process(delta: float) -> void:
 		shoot_timer = 0.0
 	
 func shoot(direction: Vector2):
-	const BULLET = preload("res://bullet.tscn")
+	const BULLET = preload("res://Scenes/bullet.tscn")
 	
 	if Input.is_action_just_pressed("shoot") && shoot_timer == 0.0:
 		var new_bullet: Bullet = BULLET.instantiate()

@@ -1,48 +1,48 @@
 [gd_scene format=3 uid="uid://7yplyh1l64ys"]
 
-[ext_resource type="Script" uid="uid://bunhp8pcxiwnh" path="res://player.gd" id="1_4flbx"]
-[ext_resource type="Texture2D" uid="uid://dcvb7vw0cqdvq" path="res://Sprites/Purple Dog Sprite Sheet.png" id="2_onrkg"]
-[ext_resource type="Texture2D" uid="uid://dnron7jqq5y7j" path="res://Sprites/Purple dog run sprite sheet.png" id="3_hqtel"]
-[ext_resource type="PackedScene" uid="uid://cglof3762id0s" path="res://gun.tscn" id="3_i3pqv"]
+[ext_resource type="Script" uid="uid://bunhp8pcxiwnh" path="res://Scripts/player.gd" id="1_vgqql"]
+[ext_resource type="Texture2D" uid="uid://dcvb7vw0cqdvq" path="res://Sprites/Purple Dog Sprite Sheet.png" id="2_fkybt"]
+[ext_resource type="Texture2D" uid="uid://dnron7jqq5y7j" path="res://Sprites/Purple dog run sprite sheet.png" id="3_x3wgy"]
+[ext_resource type="PackedScene" uid="uid://cglof3762id0s" path="res://Scenes/gun.tscn" id="4_3smsa"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
-atlas = ExtResource("2_onrkg")
+atlas = ExtResource("2_fkybt")
 region = Rect2(0, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i3pqv"]
-atlas = ExtResource("2_onrkg")
+atlas = ExtResource("2_fkybt")
 region = Rect2(20, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hqtel"]
-atlas = ExtResource("2_onrkg")
+atlas = ExtResource("2_fkybt")
 region = Rect2(40, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_sweqy"]
-atlas = ExtResource("2_onrkg")
+atlas = ExtResource("2_fkybt")
 region = Rect2(60, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2hs0m"]
-atlas = ExtResource("3_hqtel")
+atlas = ExtResource("3_x3wgy")
 region = Rect2(0, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1jxqw"]
-atlas = ExtResource("3_hqtel")
+atlas = ExtResource("3_x3wgy")
 region = Rect2(20, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dw050"]
-atlas = ExtResource("3_hqtel")
+atlas = ExtResource("3_x3wgy")
 region = Rect2(40, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_b26j0"]
-atlas = ExtResource("3_hqtel")
+atlas = ExtResource("3_x3wgy")
 region = Rect2(60, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n7ghd"]
-atlas = ExtResource("3_hqtel")
+atlas = ExtResource("3_x3wgy")
 region = Rect2(80, 0, 20, 20)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nvl01"]
-atlas = ExtResource("3_hqtel")
+atlas = ExtResource("3_x3wgy")
 region = Rect2(100, 0, 20, 20)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_v6r4t"]
@@ -92,11 +92,10 @@ animations = [{
 size = Vector2(12, 16)
 
 [node name="Player" type="CharacterBody2D" unique_id=1648775095]
-script = ExtResource("1_4flbx")
+script = ExtResource("1_vgqql")
 speed = 110.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=50827932]
-unique_name_in_owner = true
 sprite_frames = SubResource("SpriteFrames_v6r4t")
 animation = &"run"
 
@@ -113,5 +112,18 @@ position_smoothing_speed = 10.0
 [node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
 position = Vector2(0, 2)
 
-[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("3_i3pqv")]
+[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("4_3smsa")]
 position = Vector2(9, 0)
+
+[node name="FocusBar" type="ProgressBar" parent="." unique_id=1135871507]
+offset_left = -21.498035
+offset_top = -24.784163
+offset_right = -14.4268875
+offset_bottom = 22.946085
+fill_mode = 3
+
+[node name="DodgeTimer" type="Timer" parent="." unique_id=1681430734]
+wait_time = 0.25
+one_shot = true
+
+[connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
