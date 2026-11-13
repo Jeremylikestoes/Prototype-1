@@ -93,7 +93,6 @@ size = Vector2(12, 16)
 
 [node name="Player" type="CharacterBody2D" unique_id=1648775095]
 script = ExtResource("1_vgqql")
-speed = 110.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=50827932]
 sprite_frames = SubResource("SpriteFrames_v6r4t")
@@ -123,7 +122,6 @@ offset_bottom = 22.946085
 fill_mode = 3
 
 [node name="DodgeTimer" type="Timer" parent="." unique_id=1681430734]
-wait_time = 0.25
 one_shot = true
 
 [connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
