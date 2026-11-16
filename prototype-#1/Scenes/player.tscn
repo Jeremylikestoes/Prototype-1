@@ -91,6 +91,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
 size = Vector2(12, 16)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3gngh"]
+size = Vector2(12, 16)
+
 [node name="Player" type="CharacterBody2D" unique_id=1648775095]
 script = ExtResource("1_vgqql")
 
@@ -114,14 +117,11 @@ position = Vector2(0, 2)
 [node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("4_3smsa")]
 position = Vector2(9, 0)
 
-[node name="FocusBar" type="ProgressBar" parent="." unique_id=1135871507]
-offset_left = -21.498035
-offset_top = -24.784163
-offset_right = -14.4268875
-offset_bottom = 22.946085
-fill_mode = 3
-
 [node name="DodgeTimer" type="Timer" parent="." unique_id=1681430734]
 one_shot = true
+
+[node name="DodgeCast" type="ShapeCast2D" parent="." unique_id=215492987]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_3gngh")
 
 [connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
