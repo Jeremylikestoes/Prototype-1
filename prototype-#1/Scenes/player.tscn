@@ -94,6 +94,14 @@ size = Vector2(12, 16)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3gngh"]
 size = Vector2(12, 16)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x3wgy"]
+bg_color = Color(0.2979908, 0.6216047, 0.91616815, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
 [node name="Player" type="CharacterBody2D" unique_id=1648775095]
 script = ExtResource("1_vgqql")
 
@@ -126,6 +134,15 @@ one_shot = true
 
 [node name="BetweenDodgeTimer" type="Timer" parent="." unique_id=949295884]
 one_shot = true
+
+[node name="FocusBar" type="ProgressBar" parent="." unique_id=1310056122]
+offset_left = -206.0
+offset_top = -45.0
+offset_right = -197.20921
+offset_bottom = 45.000008
+theme_override_styles/fill = SubResource("StyleBoxFlat_x3wgy")
+fill_mode = 3
+show_percentage = false
 
 [connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
 [connection signal="timeout" from="BetweenDodgeTimer" to="." method="_on_between_dodge_timer_timeout"]

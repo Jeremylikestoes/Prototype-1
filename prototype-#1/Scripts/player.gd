@@ -1,16 +1,16 @@
 class_name Player
 extends CharacterBody2D
 
+@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
+
 @onready var gun: Node2D = $GunPivot/Gun
 @onready var gun_pivot: Marker2D = $GunPivot
-
-@onready var animated_sprite: AnimatedSprite2D = $AnimatedSprite2D
 
 @onready var dodge_cast: ShapeCast2D = $DodgeCast
 @onready var dodge_timer: Timer = $DodgeTimer
 @onready var between_dodge_timer: Timer = $BetweenDodgeTimer
 
-const SMOOTHING_SPEED = 7.0
+@onready var focus_bar: ProgressBar = $FocusBar
 
 var speed: float = 120.0
 var acceleration: float = 1800.0
@@ -24,6 +24,9 @@ var dodge_duration: float = 0.15
 var between_dodge_duration: float = 0.5
 var can_dodge: bool = true
 
+var maximum_focus: float = 30.0
+var minimum_focus: float = 10.0
+
 var current_state: State = State.Idle
 
 enum State {
@@ -35,13 +38,18 @@ enum State {
 func _ready() -> void:
 	dodge_timer.wait_time = dodge_duration
 	between_dodge_timer.wait_time = between_dodge_duration
+	
+	focus_bar.max_value = maximum_focus
+	focus_bar.min_value = minimum_focus
 
 func _process(delta: float) -> void:
 	var mouse_position := get_global_mouse_position()
 	var gun_rotation_to_mouse = gun_pivot.global_position.angle_to_point(mouse_position)
 	var mouse_relative_position := (mouse_position - gun_pivot.global_position)
 	
+	const SMOOTHING_SPEED = 7.0
 	var weight: float = 1 - exp(-SMOOTHING_SPEED * delta)
+	
 	var orbit_position = lerp_angle(gun_rotation_to_mouse, gun_pivot.rotation, weight)
 	
 	gun_pivot.global_rotation = orbit_position
@@ -72,6 +80,8 @@ func _physics_process(delta: float) -> void:
 func idle_state(direction: Vector2, delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
 	
+	gain_focus()
+	
 	if direction:
 		change_state(State.Run)
 	elif Input.is_action_just_pressed("dodge") and can_dodge:
@@ -84,6 +94,8 @@ func run_state(direction: Vector2, delta: float) -> void:
 		velocity = velocity.move_toward(target_velocity, acceleration * delta)
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
+	
+	loose_focus()
 	
 	if direction == Vector2.ZERO and velocity.length() < 1.0:
 		change_state(State.Idle)
@@ -165,3 +177,13 @@ func _on_dodge_timer_timeout() -> void:
 
 func _on_between_dodge_timer_timeout() -> void:
 	can_dodge = true
+	
+func gain_focus() -> void:
+	var focus_gain_rate: float = 0.02
+	
+	focus_bar.value += focus_gain_rate
+	
+func loose_focus() -> void:
+	var focus_loss_rate: float = 0.04
+	
+	focus_bar.value -= focus_loss_rate
