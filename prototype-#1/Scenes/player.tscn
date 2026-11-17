@@ -105,6 +105,10 @@ animation = &"run"
 position = Vector2(0, 1.9999998)
 shape = SubResource("RectangleShape2D_onrkg")
 
+[node name="DodgeCast" type="ShapeCast2D" parent="." unique_id=215492987]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_3gngh")
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1302270895]
 zoom = Vector2(3, 3)
 process_callback = 0
@@ -120,8 +124,8 @@ position = Vector2(9, 0)
 [node name="DodgeTimer" type="Timer" parent="." unique_id=1681430734]
 one_shot = true
 
-[node name="DodgeCast" type="ShapeCast2D" parent="." unique_id=215492987]
-position = Vector2(0, 2)
-shape = SubResource("RectangleShape2D_3gngh")
+[node name="BetweenDodgeTimer" type="Timer" parent="." unique_id=949295884]
+one_shot = true
 
 [connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
+[connection signal="timeout" from="BetweenDodgeTimer" to="." method="_on_between_dodge_timer_timeout"]
