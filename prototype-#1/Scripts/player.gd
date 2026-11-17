@@ -10,7 +10,7 @@ extends CharacterBody2D
 @onready var dodge_timer: Timer = $DodgeTimer
 @onready var between_dodge_timer: Timer = $BetweenDodgeTimer
 
-@onready var focus_bar: ProgressBar = $FocusBar
+@onready var focus_bar: ProgressBar = $Camera2D/FocusBar
 
 var speed: float = 120.0
 var acceleration: float = 1800.0
@@ -43,6 +43,7 @@ func _ready() -> void:
 	focus_bar.min_value = minimum_focus
 
 func _process(delta: float) -> void:
+	# Gets the gun rotation based on the mouse position
 	var mouse_position := get_global_mouse_position()
 	var gun_rotation_to_mouse = gun_pivot.global_position.angle_to_point(mouse_position)
 	var mouse_relative_position := (mouse_position - gun_pivot.global_position)
@@ -56,7 +57,6 @@ func _process(delta: float) -> void:
 	
 	gun.scale.y = 1 if mouse_relative_position.x > 0 else -1
 	gun_pivot.show_behind_parent = mouse_relative_position.y  < -2
-	
 
 func _physics_process(delta: float) -> void:
 	var mouse_relative_position = (get_global_mouse_position() - global_position)
@@ -125,13 +125,9 @@ func enter_state(state: State) -> void:
 			animated_sprite.play("run")
 			
 		State.Dodge:
-			if get_direction():
-				dodge_direction = get_direction()
-			else:
-				dodge_direction = (get_global_mouse_position() - global_position).normalized()
+			update_dodge_direction()
 			
-			update_dodge_position()
-			
+			# Used to move the player for the dodge (instead of lerp)
 			var dodge_target_position: Vector2 = global_position + dodge_direction * dodge_distance
 			var dodge_tween: Tween = create_tween()
 			
@@ -163,7 +159,14 @@ func get_direction():
 	var direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	return direction.round().normalized()
 
-func update_dodge_position() -> void:
+func update_dodge_direction() -> void:
+	# Direction if it's mouse or movement
+	if get_direction():
+		dodge_direction = get_direction()
+	else:
+		dodge_direction = (get_global_mouse_position() - global_position).normalized()
+	
+	# Gets the dodge distance and direction for the shape cast
 	if get_direction():
 		dodge_cast.target_position = get_direction() * max_dodge_distance
 	else:
@@ -177,12 +180,12 @@ func _on_dodge_timer_timeout() -> void:
 
 func _on_between_dodge_timer_timeout() -> void:
 	can_dodge = true
-	
+
 func gain_focus() -> void:
 	var focus_gain_rate: float = 0.02
 	
 	focus_bar.value += focus_gain_rate
-	
+
 func loose_focus() -> void:
 	var focus_loss_rate: float = 0.04
 	

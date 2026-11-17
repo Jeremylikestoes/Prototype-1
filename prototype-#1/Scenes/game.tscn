@@ -2,19 +2,24 @@
 
 [ext_resource type="PackedScene" uid="uid://7yplyh1l64ys" path="res://Scenes/player.tscn" id="1_wrm1d"]
 [ext_resource type="PackedScene" uid="uid://d0nkrqimljjrd" path="res://Scenes/enemy.tscn" id="2_3dryh"]
+[ext_resource type="Script" uid="uid://dufcnnykql2wn" path="res://Scenes/cursor.gd" id="2_i6g32"]
 [ext_resource type="TileSet" uid="uid://x3aadhbg6hbf" path="res://Placeholder Tileset.tres" id="3_wowpa"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3dryh"]
+load_path = "res://.godot/imported/Cursor Sprite.png-2d5ca292c8bc290c6b7f7388c3d56c63.ctex"
 
 [node name="GameTree" type="Node2D" unique_id=2023269407]
 
+[node name="Cursor" type="Sprite2D" parent="." unique_id=680910128]
+z_index = 2
+texture = SubResource("CompressedTexture2D_3dryh")
+script = ExtResource("2_i6g32")
+
 [node name="Player" parent="." unique_id=1648775095 instance=ExtResource("1_wrm1d")]
-top_level = true
-light_mask = 2
-visibility_layer = 2
+z_index = 1
 
 [node name="Enemy" parent="." unique_id=1703504748 instance=ExtResource("2_3dryh")]
-top_level = true
-light_mask = 2
-visibility_layer = 2
+z_index = 1
 position = Vector2(-132, -51)
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1946593921]

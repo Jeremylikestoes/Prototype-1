@@ -121,7 +121,17 @@ shape = SubResource("RectangleShape2D_3gngh")
 zoom = Vector2(3, 3)
 process_callback = 0
 limit_enabled = false
+position_smoothing_enabled = true
 position_smoothing_speed = 10.0
+
+[node name="FocusBar" type="ProgressBar" parent="Camera2D" unique_id=1310056122]
+offset_left = -206.0
+offset_top = -45.0
+offset_right = -197.20921
+offset_bottom = 45.000008
+theme_override_styles/fill = SubResource("StyleBoxFlat_x3wgy")
+fill_mode = 3
+show_percentage = false
 
 [node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
 position = Vector2(0, 2)
@@ -134,15 +144,6 @@ one_shot = true
 
 [node name="BetweenDodgeTimer" type="Timer" parent="." unique_id=949295884]
 one_shot = true
-
-[node name="FocusBar" type="ProgressBar" parent="." unique_id=1310056122]
-offset_left = -206.0
-offset_top = -45.0
-offset_right = -197.20921
-offset_bottom = 45.000008
-theme_override_styles/fill = SubResource("StyleBoxFlat_x3wgy")
-fill_mode = 3
-show_percentage = false
 
 [connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
 [connection signal="timeout" from="BetweenDodgeTimer" to="." method="_on_between_dodge_timer_timeout"]
