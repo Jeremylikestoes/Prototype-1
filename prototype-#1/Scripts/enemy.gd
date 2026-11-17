@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 
 @onready var player: CharacterBody2D = get_parent().get_node("Player")
+@onready var sprite: Sprite2D = $Sprite2D
 
 var speed: float = 75.0
 var should_chase: bool = false
@@ -15,9 +16,9 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		
 		if direction.x > 0:
-			$Sprite2D.flip_h = false
+			sprite.flip_h = false
 		elif direction.x < 0:
-			$Sprite2D.flip_h = true
+			sprite.flip_h = true
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	pass

@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://dcvb7vw0cqdvq" path="res://Sprites/Purple Dog Sprite Sheet.png" id="2_fkybt"]
 [ext_resource type="Texture2D" uid="uid://dnron7jqq5y7j" path="res://Sprites/Purple dog run sprite sheet.png" id="3_x3wgy"]
 [ext_resource type="PackedScene" uid="uid://cglof3762id0s" path="res://Scenes/gun.tscn" id="4_3smsa"]
+[ext_resource type="Script" uid="uid://hq1oqb58hqfq" path="res://Scenes/state_machine.gd" id="5_3smsa"]
+[ext_resource type="Script" uid="uid://cf1xrprqn2ulw" path="res://Scenes/move_state.gd" id="6_8erm5"]
+[ext_resource type="Script" uid="uid://dhk3puuml1tbm" path="res://Scenes/player_movement.gd" id="7_f1ek2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
 atlas = ExtResource("2_fkybt")
@@ -124,7 +127,13 @@ limit_enabled = false
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 
-[node name="FocusBar" type="ProgressBar" parent="Camera2D" unique_id=1310056122]
+[node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
+position = Vector2(0, 2)
+
+[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("4_3smsa")]
+position = Vector2(9, 0)
+
+[node name="FocusBar" type="ProgressBar" parent="." unique_id=1310056122]
 offset_left = -206.0
 offset_top = -45.0
 offset_right = -197.20921
@@ -133,17 +142,26 @@ theme_override_styles/fill = SubResource("StyleBoxFlat_x3wgy")
 fill_mode = 3
 show_percentage = false
 
-[node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
-position = Vector2(0, 2)
-
-[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("4_3smsa")]
-position = Vector2(9, 0)
-
 [node name="DodgeTimer" type="Timer" parent="." unique_id=1681430734]
 one_shot = true
 
 [node name="BetweenDodgeTimer" type="Timer" parent="." unique_id=949295884]
 one_shot = true
+
+[node name="Components" type="Node" parent="." unique_id=690778740]
+
+[node name="StateMachine" type="Node" parent="Components" unique_id=1314379647]
+script = ExtResource("5_3smsa")
+
+[node name="IdleState" type="Node" parent="Components/StateMachine" unique_id=1703007352]
+
+[node name="MoveState" type="Node" parent="Components/StateMachine" unique_id=1900386278]
+script = ExtResource("6_8erm5")
+
+[node name="DodgeState" type="Node" parent="Components/StateMachine" unique_id=1929656412]
+
+[node name="PlayerMovement" type="Node" parent="Components" unique_id=1651404707]
+script = ExtResource("7_f1ek2")
 
 [connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
 [connection signal="timeout" from="BetweenDodgeTimer" to="." method="_on_between_dodge_timer_timeout"]

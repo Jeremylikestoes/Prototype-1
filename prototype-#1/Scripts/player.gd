@@ -57,9 +57,11 @@ func _process(delta: float) -> void:
 	
 	gun.scale.y = 1 if mouse_relative_position.x > 0 else -1
 	gun_pivot.show_behind_parent = mouse_relative_position.y  < -2
+	
+	if get_local_mouse_position().x != 0:
+		animated_sprite.flip_h = get_local_mouse_position().x < 0
 
 func _physics_process(delta: float) -> void:
-	var mouse_relative_position = (get_global_mouse_position() - global_position)
 	
 	match current_state:
 		
@@ -73,9 +75,6 @@ func _physics_process(delta: float) -> void:
 			dodge_state(get_direction(), delta)
 				
 	move_and_slide()
-		
-	if mouse_relative_position.x != 0:
-		animated_sprite.flip_h = mouse_relative_position.x < 0
 
 func idle_state(direction: Vector2, delta: float) -> void:
 	velocity = velocity.move_toward(Vector2.ZERO, deceleration * delta)
