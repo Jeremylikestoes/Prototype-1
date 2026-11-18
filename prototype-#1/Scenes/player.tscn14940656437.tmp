@@ -1,0 +1,196 @@
+[gd_scene format=3 uid="uid://7yplyh1l64ys"]
+
+[ext_resource type="Script" uid="uid://bunhp8pcxiwnh" path="res://Scripts/player.gd" id="1_vgqql"]
+[ext_resource type="Texture2D" uid="uid://dcvb7vw0cqdvq" path="res://Sprites/Purple Dog Sprite Sheet.png" id="2_fkybt"]
+[ext_resource type="Texture2D" uid="uid://dnron7jqq5y7j" path="res://Sprites/Purple dog run sprite sheet.png" id="3_x3wgy"]
+[ext_resource type="PackedScene" uid="uid://cglof3762id0s" path="res://Scenes/gun.tscn" id="4_3smsa"]
+[ext_resource type="Script" uid="uid://hq1oqb58hqfq" path="res://Scenes/state_machine.gd" id="5_3smsa"]
+[ext_resource type="Script" uid="uid://cf1xrprqn2ulw" path="res://Scenes/move_state.gd" id="6_8erm5"]
+[ext_resource type="Script" uid="uid://dbpdy80ruglaq" path="res://Scenes/idle_state.gd" id="7_8erm5"]
+[ext_resource type="Script" uid="uid://dhk3puuml1tbm" path="res://Scenes/player_movement.gd" id="7_f1ek2"]
+[ext_resource type="Script" uid="uid://btvlp8khhj3wv" path="res://Scenes/dodge_state.gd" id="9_f1ek2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
+atlas = ExtResource("2_fkybt")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3pqv"]
+atlas = ExtResource("2_fkybt")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqtel"]
+atlas = ExtResource("2_fkybt")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sweqy"]
+atlas = ExtResource("2_fkybt")
+region = Rect2(60, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2hs0m"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(0, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1jxqw"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(20, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dw050"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(40, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b26j0"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(60, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n7ghd"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(80, 0, 20, 20)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nvl01"]
+atlas = ExtResource("3_x3wgy")
+region = Rect2(100, 0, 20, 20)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_v6r4t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_onrkg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i3pqv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqtel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sweqy")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2hs0m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1jxqw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dw050")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b26j0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n7ghd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nvl01")
+}],
+"loop": 1,
+"name": &"move",
+"speed": 9.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_onrkg"]
+size = Vector2(12, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3gngh"]
+size = Vector2(12, 16)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x3wgy"]
+bg_color = Color(0.2979908, 0.6216047, 0.91616815, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+corner_detail = 6
+
+[node name="Player" type="CharacterBody2D" unique_id=1648775095 node_paths=PackedStringArray("state_machine", "animated_sprite", "gun_pivot", "gun", "focus_bar")]
+script = ExtResource("1_vgqql")
+state_machine = NodePath("Components/StateMachine")
+animated_sprite = NodePath("AnimatedSprite2D")
+gun_pivot = NodePath("GunPivot")
+gun = NodePath("GunPivot/Gun")
+focus_bar = NodePath("FocusBar")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=50827932]
+sprite_frames = SubResource("SpriteFrames_v6r4t")
+animation = &"move"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=86691010]
+position = Vector2(0, 1.9999998)
+shape = SubResource("RectangleShape2D_onrkg")
+
+[node name="DodgeCast" type="ShapeCast2D" parent="." unique_id=215492987]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_3gngh")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1302270895]
+zoom = Vector2(3, 3)
+process_callback = 0
+limit_enabled = false
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+
+[node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
+position = Vector2(0, 2)
+
+[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("4_3smsa")]
+position = Vector2(9, 0)
+
+[node name="FocusBar" type="ProgressBar" parent="." unique_id=1310056122]
+offset_left = -206.0
+offset_top = -45.0
+offset_right = -197.20921
+offset_bottom = 45.000008
+theme_override_styles/fill = SubResource("StyleBoxFlat_x3wgy")
+fill_mode = 3
+show_percentage = false
+
+[node name="DodgeTimer" type="Timer" parent="." unique_id=1681430734]
+one_shot = true
+
+[node name="BetweenDodgeTimer" type="Timer" parent="." unique_id=949295884]
+one_shot = true
+
+[node name="Components" type="Node" parent="." unique_id=690778740]
+
+[node name="StateMachine" type="Node" parent="Components" unique_id=1314379647 node_paths=PackedStringArray("player", "player_movement", "idle_state", "move_state", "dodge_state", "animated_sprite")]
+script = ExtResource("5_3smsa")
+player = NodePath("../..")
+player_movement = NodePath("PlayerMovement")
+idle_state = NodePath("IdleState")
+move_state = NodePath("MoveState")
+dodge_state = NodePath("DodgeState")
+animated_sprite = NodePath("../../AnimatedSprite2D")
+
+[node name="PlayerMovement" type="Node" parent="Components/StateMachine" unique_id=1651404707 node_paths=PackedStringArray("player", "dodge_state")]
+script = ExtResource("7_f1ek2")
+player = NodePath("../../..")
+dodge_state = NodePath("../DodgeState")
+
+[node name="IdleState" type="Node" parent="Components/StateMachine" unique_id=1703007352 node_paths=PackedStringArray("player", "dodge_state")]
+script = ExtResource("7_8erm5")
+player = NodePath("../../..")
+dodge_state = NodePath("../DodgeState")
+
+[node name="MoveState" type="Node" parent="Components/StateMachine" unique_id=1900386278 node_paths=PackedStringArray("player", "idle_state", "move_state", "dodge_state", "animated_sprite")]
+script = ExtResource("6_8erm5")
+player = NodePath("../../..")
+idle_state = NodePath("../IdleState")
+move_state = NodePath(".")
+dodge_state = NodePath("../DodgeState")
+animated_sprite = NodePath("../../../AnimatedSprite2D")
+
+[node name="DodgeState" type="Node" parent="Components/StateMachine" unique_id=1929656412 node_paths=PackedStringArray("dodge_cast", "dodge_timer", "between_dodge_timer", "player", "dodge_state")]
+script = ExtResource("9_f1ek2")
+dodge_cast = NodePath("../../../DodgeCast")
+dodge_timer = NodePath("../../../DodgeTimer")
+between_dodge_timer = NodePath("../../../BetweenDodgeTimer")
+player = NodePath("../../..")
+dodge_state = NodePath(".")
+
+[connection signal="timeout" from="DodgeTimer" to="Components/StateMachine/DodgeState" method="_on_dodge_timer_timeout"]
+[connection signal="timeout" from="BetweenDodgeTimer" to="Components/StateMachine/DodgeState" method="_on_between_dodge_timer_timeout"]

@@ -1,9 +1,10 @@
-extends Node
+class_name MoveState
+extends PlayerMovement
 
-@onready var player_movement: Node = $"../../PlayerMovement"
-
-var speed: float = 120.0
-
-func handle_movement(direction: Vector2, delta: float):
-	pass
+func _handle_movement(direction: Vector2, delta: float):
+	var target_velocity = direction * player.speed
 	
+	if direction:
+		_accelerate(target_velocity, delta)
+	else:
+		_decelerate(delta)

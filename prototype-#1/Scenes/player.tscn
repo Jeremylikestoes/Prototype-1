@@ -6,7 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://cglof3762id0s" path="res://Scenes/gun.tscn" id="4_3smsa"]
 [ext_resource type="Script" uid="uid://hq1oqb58hqfq" path="res://Scenes/state_machine.gd" id="5_3smsa"]
 [ext_resource type="Script" uid="uid://cf1xrprqn2ulw" path="res://Scenes/move_state.gd" id="6_8erm5"]
+[ext_resource type="Script" uid="uid://dbpdy80ruglaq" path="res://Scenes/idle_state.gd" id="7_8erm5"]
 [ext_resource type="Script" uid="uid://dhk3puuml1tbm" path="res://Scenes/player_movement.gd" id="7_f1ek2"]
+[ext_resource type="Script" uid="uid://btvlp8khhj3wv" path="res://Scenes/dodge_state.gd" id="9_f1ek2"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
 atlas = ExtResource("2_fkybt")
@@ -87,7 +89,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_nvl01")
 }],
 "loop": 1,
-"name": &"run",
+"name": &"move",
 "speed": 9.0
 }]
 
@@ -105,12 +107,17 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 6
 
-[node name="Player" type="CharacterBody2D" unique_id=1648775095]
+[node name="Player" type="CharacterBody2D" unique_id=1648775095 node_paths=PackedStringArray("state_machine", "animated_sprite", "gun_pivot", "gun", "focus_bar")]
 script = ExtResource("1_vgqql")
+state_machine = NodePath("Components/StateMachine")
+animated_sprite = NodePath("AnimatedSprite2D")
+gun_pivot = NodePath("GunPivot")
+gun = NodePath("GunPivot/Gun")
+focus_bar = NodePath("FocusBar")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=50827932]
 sprite_frames = SubResource("SpriteFrames_v6r4t")
-animation = &"run"
+animation = &"move"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=86691010]
 position = Vector2(0, 1.9999998)
@@ -150,18 +157,37 @@ one_shot = true
 
 [node name="Components" type="Node" parent="." unique_id=690778740]
 
-[node name="StateMachine" type="Node" parent="Components" unique_id=1314379647]
+[node name="StateMachine" type="Node" parent="Components" unique_id=1314379647 node_paths=PackedStringArray("player", "player_movement", "idle_state", "move_state", "dodge_state", "animated_sprite")]
 script = ExtResource("5_3smsa")
+player = NodePath("../..")
+player_movement = NodePath("PlayerMovement")
+idle_state = NodePath("IdleState")
+move_state = NodePath("MoveState")
+dodge_state = NodePath("DodgeState")
+animated_sprite = NodePath("../../AnimatedSprite2D")
 
-[node name="IdleState" type="Node" parent="Components/StateMachine" unique_id=1703007352]
-
-[node name="MoveState" type="Node" parent="Components/StateMachine" unique_id=1900386278]
-script = ExtResource("6_8erm5")
-
-[node name="DodgeState" type="Node" parent="Components/StateMachine" unique_id=1929656412]
-
-[node name="PlayerMovement" type="Node" parent="Components" unique_id=1651404707]
+[node name="PlayerMovement" type="Node" parent="Components/StateMachine" unique_id=1651404707 node_paths=PackedStringArray("player", "dodge_state")]
 script = ExtResource("7_f1ek2")
+player = NodePath("../../..")
+dodge_state = NodePath("../DodgeState")
 
-[connection signal="timeout" from="DodgeTimer" to="." method="_on_dodge_timer_timeout"]
-[connection signal="timeout" from="BetweenDodgeTimer" to="." method="_on_between_dodge_timer_timeout"]
+[node name="IdleState" type="Node" parent="Components/StateMachine" unique_id=1703007352 node_paths=PackedStringArray("player", "dodge_state")]
+script = ExtResource("7_8erm5")
+player = NodePath("../../..")
+dodge_state = NodePath("../DodgeState")
+
+[node name="MoveState" type="Node" parent="Components/StateMachine" unique_id=1900386278 node_paths=PackedStringArray("player", "dodge_state")]
+script = ExtResource("6_8erm5")
+player = NodePath("../../..")
+dodge_state = NodePath("../DodgeState")
+
+[node name="DodgeState" type="Node" parent="Components/StateMachine" unique_id=1929656412 node_paths=PackedStringArray("dodge_cast", "dodge_timer", "between_dodge_timer", "player", "dodge_state")]
+script = ExtResource("9_f1ek2")
+dodge_cast = NodePath("../../../DodgeCast")
+dodge_timer = NodePath("../../../DodgeTimer")
+between_dodge_timer = NodePath("../../../BetweenDodgeTimer")
+player = NodePath("../../..")
+dodge_state = NodePath(".")
+
+[connection signal="timeout" from="DodgeTimer" to="Components/StateMachine" method="_on_dodge_timer_timeout"]
+[connection signal="timeout" from="BetweenDodgeTimer" to="Components/StateMachine/DodgeState" method="_on_between_dodge_timer_timeout"]
