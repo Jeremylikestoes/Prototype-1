@@ -4,6 +4,8 @@ extends Node
 @export var player: Player
 @export var dodge_state: DodgeState
 
+@export var focus_component: FocusComponent
+
 var acceleration: float = 1800.0
 var deceleration: float = 2400.0
 

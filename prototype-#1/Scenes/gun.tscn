@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://c8oxx751slieq" path="res://Scripts/gun.gd" id="1_dk5gl"]
 [ext_resource type="Texture2D" uid="uid://dr5ykos8qbt8j" path="res://Sprites/Gun Sprite.png" id="1_vk1bi"]
 
-[node name="Gun" type="Node2D" unique_id=2103357176]
+[node name="Gun" type="Node2D" unique_id=2103357176 node_paths=PackedStringArray("gun", "muzzle")]
 script = ExtResource("1_dk5gl")
+gun = NodePath(".")
+muzzle = NodePath("Muzzle")
 
 [node name="Muzzle" type="Marker2D" parent="." unique_id=1079890421]
-unique_name_in_owner = true
 position = Vector2(5, 0)
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=660765689]

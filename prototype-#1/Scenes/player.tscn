@@ -9,6 +9,8 @@
 [ext_resource type="Script" uid="uid://dbpdy80ruglaq" path="res://Scenes/idle_state.gd" id="7_8erm5"]
 [ext_resource type="Script" uid="uid://dhk3puuml1tbm" path="res://Scenes/player_movement.gd" id="7_f1ek2"]
 [ext_resource type="Script" uid="uid://btvlp8khhj3wv" path="res://Scenes/dodge_state.gd" id="9_f1ek2"]
+[ext_resource type="Script" uid="uid://b75dg83vhvvxe" path="res://Scenes/health_component.gd" id="10_gymyn"]
+[ext_resource type="Script" uid="uid://dbfxbihwkj5kb" path="res://Scenes/focus_component.gd" id="10_tx1dd"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_onrkg"]
 atlas = ExtResource("2_fkybt")
@@ -107,13 +109,10 @@ corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 corner_detail = 6
 
-[node name="Player" type="CharacterBody2D" unique_id=1648775095 node_paths=PackedStringArray("state_machine", "animated_sprite", "gun_pivot", "gun", "focus_bar")]
+[node name="Player" type="CharacterBody2D" unique_id=1648775095 node_paths=PackedStringArray("state_machine", "animated_sprite")]
 script = ExtResource("1_vgqql")
 state_machine = NodePath("Components/StateMachine")
 animated_sprite = NodePath("AnimatedSprite2D")
-gun_pivot = NodePath("GunPivot")
-gun = NodePath("GunPivot/Gun")
-focus_bar = NodePath("FocusBar")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=50827932]
 sprite_frames = SubResource("SpriteFrames_v6r4t")
@@ -137,8 +136,13 @@ position_smoothing_speed = 10.0
 [node name="GunPivot" type="Marker2D" parent="." unique_id=1519147454]
 position = Vector2(0, 2)
 
-[node name="Gun" parent="GunPivot" unique_id=2103357176 instance=ExtResource("4_3smsa")]
+[node name="Gun" parent="GunPivot" unique_id=2103357176 node_paths=PackedStringArray("gun_pivot") instance=ExtResource("4_3smsa")]
 position = Vector2(9, 0)
+gun_pivot = NodePath("..")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=62192014]
+offset_right = 4.0
+offset_bottom = 27.0
 
 [node name="FocusBar" type="ProgressBar" parent="." unique_id=1310056122]
 offset_left = -206.0
@@ -157,29 +161,34 @@ one_shot = true
 
 [node name="Components" type="Node" parent="." unique_id=690778740]
 
-[node name="StateMachine" type="Node" parent="Components" unique_id=1314379647 node_paths=PackedStringArray("player", "player_movement", "idle_state", "move_state", "dodge_state", "animated_sprite")]
+[node name="StateMachine" type="Node" parent="Components" unique_id=1314379647 node_paths=PackedStringArray("player", "player_movement", "idle_state", "move_state", "dodge_state", "between_dodge_timer", "focus_component", "animated_sprite")]
 script = ExtResource("5_3smsa")
 player = NodePath("../..")
 player_movement = NodePath("PlayerMovement")
 idle_state = NodePath("IdleState")
 move_state = NodePath("MoveState")
 dodge_state = NodePath("DodgeState")
+between_dodge_timer = NodePath("../../BetweenDodgeTimer")
+focus_component = NodePath("../FocusComponent")
 animated_sprite = NodePath("../../AnimatedSprite2D")
 
-[node name="PlayerMovement" type="Node" parent="Components/StateMachine" unique_id=1651404707 node_paths=PackedStringArray("player", "dodge_state")]
+[node name="PlayerMovement" type="Node" parent="Components/StateMachine" unique_id=1651404707 node_paths=PackedStringArray("player", "dodge_state", "focus_component")]
 script = ExtResource("7_f1ek2")
 player = NodePath("../../..")
 dodge_state = NodePath("../DodgeState")
+focus_component = NodePath("../../FocusComponent")
 
-[node name="IdleState" type="Node" parent="Components/StateMachine" unique_id=1703007352 node_paths=PackedStringArray("player", "dodge_state")]
+[node name="IdleState" type="Node" parent="Components/StateMachine" unique_id=1703007352 node_paths=PackedStringArray("player", "dodge_state", "focus_component")]
 script = ExtResource("7_8erm5")
 player = NodePath("../../..")
 dodge_state = NodePath("../DodgeState")
+focus_component = NodePath("../../FocusComponent")
 
-[node name="MoveState" type="Node" parent="Components/StateMachine" unique_id=1900386278 node_paths=PackedStringArray("player", "dodge_state")]
+[node name="MoveState" type="Node" parent="Components/StateMachine" unique_id=1900386278 node_paths=PackedStringArray("player", "dodge_state", "focus_component")]
 script = ExtResource("6_8erm5")
 player = NodePath("../../..")
 dodge_state = NodePath("../DodgeState")
+focus_component = NodePath("../../FocusComponent")
 
 [node name="DodgeState" type="Node" parent="Components/StateMachine" unique_id=1929656412 node_paths=PackedStringArray("dodge_cast", "dodge_timer", "between_dodge_timer", "player", "dodge_state")]
 script = ExtResource("9_f1ek2")
@@ -188,6 +197,14 @@ dodge_timer = NodePath("../../../DodgeTimer")
 between_dodge_timer = NodePath("../../../BetweenDodgeTimer")
 player = NodePath("../../..")
 dodge_state = NodePath(".")
+
+[node name="HealthComponent" type="Node" parent="Components" unique_id=1570483965 node_paths=PackedStringArray("health_bar")]
+script = ExtResource("10_gymyn")
+health_bar = NodePath("../../HealthBar")
+
+[node name="FocusComponent" type="Node" parent="Components" unique_id=1282675913 node_paths=PackedStringArray("focus_bar")]
+script = ExtResource("10_tx1dd")
+focus_bar = NodePath("../../FocusBar")
 
 [connection signal="timeout" from="DodgeTimer" to="Components/StateMachine" method="_on_dodge_timer_timeout"]
 [connection signal="timeout" from="BetweenDodgeTimer" to="Components/StateMachine/DodgeState" method="_on_between_dodge_timer_timeout"]

@@ -8,6 +8,10 @@ extends Node
 @export var move_state: MoveState
 @export var dodge_state: DodgeState
 
+@export var between_dodge_timer: Timer
+
+@export var focus_component: FocusComponent
+
 @export var animated_sprite: AnimatedSprite2D
 
 var current_state: State = State.Idle
@@ -24,6 +28,9 @@ func _update(direction: Vector2, delta: float) -> void:
 		State.Idle:
 			idle_state._handle_idle(direction, delta)
 			
+			if between_dodge_timer.is_stopped():
+				focus_component._gain_focus()
+			
 			if player_movement._is_dodging():
 				_change_state(State.Dodge)
 			elif player_movement._is_moving(direction):
@@ -31,6 +38,8 @@ func _update(direction: Vector2, delta: float) -> void:
 		
 		State.Move:
 			move_state._handle_movement(direction, delta)
+			
+			focus_component._loose_focus()
 			
 			if player_movement._is_dodging():
 				_change_state(State.Dodge) 
